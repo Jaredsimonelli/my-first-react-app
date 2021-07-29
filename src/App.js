@@ -2,10 +2,12 @@ import { useState } from 'react'
 
 import Header from './components/Header'
 import Tasks from './components/Tasks'
+import AddTask from './components/AddTask'
 
 
 function App() {
     const name = 'Jared'
+    const [showAddTask, setShowAddTask] = useState(false)
     const [tasks, setTasks] = useState([
         {
             id: 1,
@@ -27,28 +29,35 @@ function App() {
         }
     ])
 
-    const addTask = () => {
-        let newTaskList = [...tasks, {
-            id: tasks[tasks.length - 1].id + 1,
-            text: 'temp',
-            day: 'temp',
-            reminder: false,
-        }]
-
-        setTasks(newTaskList)
+    // Add Task
+    const addTask = (task) => {
+        const id = Math.floor(Math.random() * 10000) + 1
+        const newTask = { id, ...task }
+        setTasks([...tasks, newTask])
     }
 
+    // Delete Task
     const deleteTask = (id) => {
         setTasks(tasks.filter((task) => task.id !== id))
+    }
+
+    // Toggle Reminder
+    const toggleReminder = (id) => {
+        setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task ))
     }
 
 
     return (
         <div className='container'>
             {/* for props of boolean or integer -> title={1} or title={true} */}
-            <Header title='This is a title' onAdd={addTask} />
+            <Header title='This is a title' showForm={() => setShowAddTask(!showAddTask)} />
+            {/* && is shorthand for a ternary where there is no else (ex: if showAddTask is true display else do not */}
+            {showAddTask && <AddTask onAdd={addTask} />}
             <h2 style={{ textDecoration: 'underline', marginBottom: '10px' }}>Hi {name} your schedule is below</h2>
-            <Tasks tasks={tasks} onDelete={deleteTask} />
+            {tasks.length > 0 ?
+                < Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
+                : 'No plans scheduled'
+            }
         </div>
     );
 }
