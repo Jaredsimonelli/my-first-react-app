@@ -50,7 +50,7 @@ function App() {
     return (
         <div className='container'>
             {/* for props of boolean or integer -> title={1} or title={true} */}
-            <Header title='This is a title' showForm={() => setShowAddTask(!showAddTask)} />
+            <Header title='This is a title' showForm={() => setShowAddTask(!showAddTask)} showAddText={!showAddTask} />
             {/* && is shorthand for a ternary where there is no else (ex: if showAddTask is true display else do not */}
             {showAddTask && <AddTask onAdd={addTask} />}
             <h2 style={{ textDecoration: 'underline', marginBottom: '10px' }}>Hi {name} your schedule is below</h2>
