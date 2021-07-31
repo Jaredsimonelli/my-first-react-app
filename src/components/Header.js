@@ -1,12 +1,14 @@
+import { useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Button from './Button'
 
 const Header = ({ title, showForm, showAddText }) => {
+    const location = useLocation()
 
     return (
         <header className='header'>
             <h1>{title}</h1>
-            <Button color={showAddText ? 'green' : 'red' } text={showAddText ? 'Add' : 'Close'} showForm={showForm} />
+            { location.pathname === '/' && (< Button color={showAddText ? 'green' : 'red'} text={showAddText ? 'Add' : 'Close'} showForm={showForm} /> )}
         </header>
     )
 }
@@ -20,5 +22,6 @@ Header.defaultProps = {
 Header.propTypes = {
     title: PropTypes.string.isRequired,
 }
+
 
 export default Header
